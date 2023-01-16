@@ -9,6 +9,7 @@ import streamlit as st
 import requests
 import pandas as pd
 import datetime as dt
+import altair as alt
 
 #dictionaries
 dict_p = {'SG':'stage','Q':'flow','RE':'rainfall'}
@@ -77,8 +78,8 @@ def df_to_csv(df):
 
 #The streamlit bit
 st.title('Download and plot SEPA API data')
-st.markdown("This is a very experimental app to allow users without a coding background to plot and download data from the [SEPA API](https://timeseriesdoc.sepa.org.uk/). Currently only a limited number of timerseries are supported. What it does (sometimes): identifies available timeseries at a (correctly-spelled) SEPA station, plots and/or downloads it in CSV format. What it does not do (yet): tell you why it is refusing to do this. Do let me know if you break it in an interesting way.")
-st.markdown('PS the SEPA API puts a daily limit on the amount unregistered users can request so consider your choices before downloading 15 minute flow data from 1961-2022 for fifty stations. ')
+st.markdown("This is a very experimental app to allow users without a coding background to plot and download data from the [SEPA API](https://timeseriesdoc.sepa.org.uk/). Currently only a limited number of timeseries are supported. What it does (sometimes): identifies available timeseries at a (correctly-spelled) SEPA station, plots and/or downloads it in CSV format. What it does not do (yet): tell you why when it doesn't. Do let me know if you break it in an interesting way.")
+st.markdown('PS the SEPA API puts a daily limit on the amount of data that unregistered users can request so consider your choices before downloading 15 minute flow data from 1961-2022 for fifty stations. ')
 
 #session state stuff
 if 'stage' not in st.session_state:
@@ -107,3 +108,5 @@ if st.session_state.stage >0:
     if st.button('Plot data'):
         pa = s_dict[f'{timeseries}']
         st.line_chart(sample,x='date',y=f'{timeseries}')
+		c = alt.Chart(sample).mark_line().encode(x='date',y=f'{timeseries}')
+        st.altair_chart(c, use_container_width=True)
