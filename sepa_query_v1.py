@@ -107,6 +107,6 @@ if st.session_state.stage >0:
                        file_name='sepa_query.csv')
     if st.button('Plot data'):
         pa = s_dict[f'{timeseries}']
-        st.line_chart(sample,x='date',y=f'{timeseries}')
-		c = alt.Chart(sample).mark_line().encode(x='date',y=f'{timeseries}')
+        #st.line_chart(sample,x='date',y=f'{timeseries}')
+        c = alt.Chart(sample).mark_line().encode(x='date',y=f'{timeseries}')
         st.altair_chart(c, use_container_width=True)
